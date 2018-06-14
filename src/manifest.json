@@ -1,0 +1,15 @@
+{
+  "short_name": "Restaurants",
+  "name": "Restaurants Reviews",
+  "background_color": "#252831",
+  "display": "standalone",
+  "theme_color": "#252831",
+  "start_url": "index.html?launcher=true",
+  "icons": [
+    {
+      "src": "/icons/burger512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
