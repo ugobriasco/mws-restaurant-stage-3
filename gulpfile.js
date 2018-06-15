@@ -3,6 +3,7 @@ const gutil = require('gulp-util');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
+const webp = require('gulp-webp');
 const concat = require('gulp-concat');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify-es').default;
@@ -111,6 +112,7 @@ gulp.task('copy-img', function() {
         progressive: true
       })
     )
+    .pipe(webp())
     .pipe(gulp.dest('dist/img'));
   gulp
     .src('src/icons/*.png')
