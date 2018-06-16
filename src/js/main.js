@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', event => {
   DBHelper.checkConnectivity();
   fetchNeighborhoods();
   fetchCuisines();
-  DBHelper.fetchOfflineReviews(); //sync offline cashed events
+  fetchRestaurants();
+  DBHelper.fetchOfflineReviews();
 });
 
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+  //hideMap();
   let loc = {
     lat: 40.722216,
     lng: -73.987501
@@ -23,13 +25,23 @@ window.initMap = () => {
   self.map = new google.maps.Map(document.getElementById('map'), {
     zoom: 12,
     center: loc,
-    scrollwheel: false
+    scrollwheel: false,
+    disableDefaultUI: true
   });
+
   fetchRestaurants();
 };
 
 window._updateRestaurants = () => {
   updateRestaurants();
+};
+
+const hideMap = () => {
+  document.getElementById('map-container').style.display = 'none';
+};
+
+const showMap = () => {
+  document.getElementById('map-container').style.display = 'block';
 };
 
 /**
