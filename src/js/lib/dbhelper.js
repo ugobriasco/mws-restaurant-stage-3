@@ -8,14 +8,14 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 1337; // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}`;
   }
 
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
+    fetch(`${DBHelper.DATABASE_URL}/restaurants`)
       .catch(err => {
         console.log(err, 'connectivity error, serving from cache');
         IDBHelper.getRestaurants().then(localres => {
@@ -36,6 +36,24 @@ class DBHelper {
         console.log('Request failed', err);
         callback(err);
       });
+  }
+
+  /**
+   * Fetch All Reviews
+   */
+  static fetchReviews(id, callback) {
+    const URL = `${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`;
+    return fetch(URL)
+      .then(res => res.json())
+      .then(reviews => callback(null, reviews))
+      .catch(err => console.error(err, 'connectivity error'));
+  }
+
+  static fetchReviewsFromRestauranId(id, callback) {
+    DBHelper.fetchReviews(id, (error, reviews) => {
+      if (error) callback(error, null);
+      callback(null, reviews);
+    });
   }
 
   /**

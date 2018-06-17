@@ -1,5 +1,11 @@
 let restaurant;
+let reviews;
 var map;
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Hello there');
+  fetchReviews();
+});
 
 /**
  * Initialize Google map, called from HTML.
@@ -76,8 +82,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
 };
 
 /**
@@ -102,10 +106,25 @@ const fillRestaurantHoursHTML = (
   }
 };
 
+const fetchReviews = () => {
+  const id = getParameterByName('id');
+
+  console.log('restaurant id: ' + id);
+
+  DBHelper.fetchReviewsFromRestauranId(id, (err, reviews) => {
+    if (!reviews) {
+      console.log('no reviews!');
+      return;
+    }
+    fillReviewsHTML(reviews);
+  });
+};
+
 /**
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+  console.log(reviews);
   const container = document.getElementById('reviews-container');
 
   if (!document.getElementById('section-review-title')) {
@@ -143,7 +162,10 @@ const createReviewHTML = review => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+
+  const formattedDate = formatDate(review.updatedAt);
+
+  date.innerHTML = formattedDate || '';
   li.appendChild(date);
 
   const rating = document.createElement('p');
@@ -185,4 +207,8 @@ const getParameterByName = (name, url) => {
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+
+const formatDate = unix_timestamp => {
+  return new Date(unix_timestamp * 1000).toString();
 };
