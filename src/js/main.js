@@ -17,16 +17,6 @@ window._updateRestaurants = () => {
   updateRestaurants();
 };
 
-const hideMap = () => {
-  console.log('hiding map');
-  document.getElementById('map-container').style.display = 'none';
-};
-
-const showMap = () => {
-  console.log('showing map');
-  document.getElementById('map-container').style.height = 'block';
-};
-
 /**
  * Fetch all neighborhoods and set their HTML.
  */
@@ -274,7 +264,18 @@ window.initMap = () => {
 
   google.maps.event.addListenerOnce(self.map, 'tilesloaded', () => {
     addMarkersToMap();
+    showMap();
   });
+};
+
+const hideMap = () => {
+  console.log('hiding map');
+  document.getElementById('map-container').style.display = 'none';
+};
+
+const showMap = () => {
+  console.log('showing map');
+  document.getElementById('map').style.opacity = '1';
 };
 
 /**

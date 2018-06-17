@@ -148,10 +148,21 @@ nav {
 }
 
 /* ====================== Home Map ====================== */
+.home #map-container {
+  background-color: #252831;
+  background-image: url('./img/map_placeholder.webp');
+  background-size: auto 100%;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
 #map {
   background-color: $primary-grey;
   height: 400px;
   width: 100%;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.2s cubic-bezier(0.5, 0.5, 0.5, 0.5);
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
@@ -293,6 +304,7 @@ nav {
   background-color: $secondary-grey;
   height: 100%;
   width: 100%;
+  opacity: 1;
 }
 
 #restaurant-name {
