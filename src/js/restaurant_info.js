@@ -212,3 +212,26 @@ const getParameterByName = (name, url) => {
 const formatDate = unix_timestamp => {
   return new Date(unix_timestamp * 1000).toString();
 };
+
+// Reviews
+
+function openForm() {
+  const elm = document.getElementById('floating-form');
+  if (elm.classList.contains('expand')) return;
+  elm.classList.add('expand');
+}
+
+function closeForm() {
+  const elm = document.getElementById('floating-form');
+  if (!elm.classList.contains('expand')) return;
+  elm.classList.remove('expand');
+}
+
+function toggleForm() {
+  const elm = document.getElementById('floating-form');
+  if (elm.classList.contains('expand')) {
+    return elm.classList.remove('expand');
+  } else {
+    elm.classList.add('expand');
+  }
+}

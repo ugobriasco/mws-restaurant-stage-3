@@ -1,0 +1,181 @@
+$primary-orange: #f58500;
+$primary-grey: #888;
+$primary-white: white;
+$primary-black: #333;
+$unchecked-star: '\2606';
+$checked-star: '\2605';
+
+.floating-form {
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+  background: $primary-black;
+  transition: all 250ms ease-out;
+
+  .floating-form-icon-wrapper {
+    z-index: 50;
+    position: absolute;
+    top: 0px;
+    right: -4px;
+    padding-top: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    img {
+      z-index: inherit;
+    }
+    :focus {
+      outline: 0;
+      box-shadow: 0 0 3pt 2pt $primary-orange;
+    }
+    :hover {
+      box-shadow: 0 0 3pt 2pt $primary-orange;
+    }
+  }
+  #close-form-icon {
+    position: absolute;
+    z-index: 49;
+    color: $primary-white;
+    opacity: 0;
+    top: 18px;
+    right: 24px;
+  }
+  form {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: calc(100% - 20px);
+    transition: all 250ms ease-out;
+    margin: 10px;
+    color: $primary-white;
+    opacity: 0;
+    #title {
+      margin-bottom: 0;
+      flex: 0.5;
+      color: $primary-orange;
+      font-size: 1.4rem;
+      font-weight: 300;
+    }
+    input {
+      margin-top: 10px;
+      padding: 14px;
+      border: none;
+      background-color: inherit;
+      border-bottom: 5px dashed $primary-orange;
+      color: $primary-orange;
+      font-size: 2.5em;
+    }
+
+    // credits https://codepen.io/lsirivong/pen/ekBxI
+    fieldset {
+      border: 0;
+      padding-top: 18px;
+      .star-cb-group {
+        /* remove inline-block whitespace */
+        font-size: 0;
+        * {
+          font-size: 1.8rem;
+        }
+        /* flip the order so we can use the + and ~ combinators */
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        & > input {
+          display: none;
+          & + label {
+            /* only enough room for the star */
+            display: inline-block;
+            text-indent: 9999px;
+            width: 1.2em;
+            white-space: nowrap;
+            cursor: pointer;
+            &:before {
+              display: inline-block;
+              text-indent: -9999px;
+              content: $unchecked-star;
+              color: $primary-grey;
+            }
+          }
+          &:checked ~ label:before,
+          & + label:hover ~ label:before,
+          & + label:hover:before {
+            content: $checked-star;
+            color: $primary-orange;
+            text-shadow: 0 0 1px #333;
+          }
+        }
+
+        /* the hidden clearer */
+        & > .star-cb-clear + label {
+          text-indent: -9999px;
+          width: 0.5em;
+          margin-left: -0.5em;
+        }
+        & > .star-cb-clear + label:before {
+          width: 0.5em;
+        }
+
+        &:hover > input + label:before {
+          content: $unchecked-star;
+          color: $primary-grey;
+          text-shadow: none;
+        }
+        &:hover > input + label:hover ~ label:before,
+        &:hover > input + label:hover:before {
+          content: $checked-star;
+          color: $primary-orange;
+          text-shadow: 0 0 1px #333;
+        }
+      }
+    }
+    textarea {
+      margin-top: 10px;
+      padding: 14px;
+      flex: 2;
+      border: none;
+      background-color: inherit;
+      border: 5px dashed $primary-orange;
+      color: $primary-orange;
+      font-size: 1.5em;
+    }
+
+    button {
+      background-color: $primary-orange;
+      color: $primary-black;
+      margin-top: 10px;
+      flex: 1;
+    }
+  }
+  &.expand {
+    width: calc(100% - 20px);
+    max-height: 375px;
+    height: 375px;
+    border-radius: 5px;
+    cursor: auto;
+    form {
+      opacity: 1;
+    }
+    #close-form-icon {
+      opacity: 1;
+    }
+  }
+  .form-dismiss-wrapper {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 30px;
+    height: 30px;
+  }
+}

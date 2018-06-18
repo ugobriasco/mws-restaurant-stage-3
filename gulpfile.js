@@ -18,6 +18,8 @@ gulp.task('default', ['copy-manifest', 'copy-img', 'build', 'watch']);
 gulp.task('watch', function() {
   console.log('👀  Gulp is watching 👀 ');
   gulp.watch('src/js/**/*.js', ['build']);
+  gulp.watch('src/scss/**/*.scss', ['styles', 'build-html']);
+  gulp.watch('src/*.html', ['build-html']);
   gulp.watch('./dist/**/*').on('change', browserSync.reload);
   browserSync.init({
     server: './dist',
@@ -32,7 +34,8 @@ gulp.task('styles', function() {
     .src([
       'src/scss/styles.scss',
       'src/scss/styles.md.scss',
-      'src/scss/styles.lg.scss'
+      'src/scss/styles.lg.scss',
+      'src/scss/floatingform.scss'
     ])
     .pipe(
       sass({
@@ -114,7 +117,7 @@ gulp.task('copy-img', function() {
     .pipe(webp())
     .pipe(gulp.dest('dist/img'));
   gulp
-    .src('src/icons/*.png')
+    .src('src/icons/*')
     .pipe(
       imagemin({
         progressive: true

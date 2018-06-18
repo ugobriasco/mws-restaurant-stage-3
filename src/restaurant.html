@@ -15,6 +15,7 @@
   <!-- inject-css css/styles.css -->
   <!-- inject-css css/styles.md.css -->
   <!-- inject-css css/styles.lg.css -->
+  <!-- inject-css css/floatingform.css -->
 </head>
 
 <body class="inside">
@@ -39,6 +40,32 @@
       <p id="restaurant-address" tabindex="0"></p>
       <table id="restaurant-hours" tabindex="0"></table>
     </section>
+
+
+
+    <div class="floating-form" id="floating-form">
+      <div class="floating-form-icon-wrapper" onClick="toggleForm()">
+        <img src="./icons/comment.svg" width="35px" alt="">
+      </div>
+      <span id="close-form-icon">&times;</span>
+      <form class="" action="index.html" method="post">
+
+        <h3 id="title">Add a review!</h3>
+        <input type="text" name="" value="" placeholder="Your name">
+        <fieldset>
+          <span class="star-cb-group">
+            <input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
+            <input type="radio" id="rating-4" name="rating" value="4" checked="checked" /><label for="rating-4">4</label>
+            <input type="radio" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>
+            <input type="radio" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>
+            <input type="radio" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>
+            <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>
+          </span>
+        </fieldset>
+        <textarea name="name" rows="8" cols="80" placeholder="Your review"></textarea>
+        <button type="button" name="button">Submit</button>
+      </form>
+    </div>
     <section id="reviews-container">
       <ul id="reviews-list"></ul>
     </section>
