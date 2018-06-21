@@ -1,4 +1,5 @@
 @charset "utf-8";
+@import './theme.scss';
 /* CSS Document */
 
 body,
@@ -12,7 +13,7 @@ html {
 /* ============================Typography============================*/
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #fdfdfd;
+  background-color: $primary-white;
 }
 
 h1,
@@ -28,21 +29,21 @@ th,
 ul,
 li p {
   line-height: 1.5;
-  color: #333;
+  color: $primary-grey;
   font-size: 1rem;
 }
 
 a {
-  color: #f58500;
+  color: $primary-orange;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: white;
+  color: $primary-white;
   text-decoration: none;
 }
 a img {
-  border: none 0px #fff;
+  border: none 0px $primary-white;
 }
 
 /*=============================Global================================= */
@@ -70,15 +71,15 @@ section {
 /*sections*/
 
 #maincontent {
-  background-color: #f3f3f3;
+  background-color: $primary-white;
   display: flex;
   flex-direction: column;
   min-height: 100%;
 }
 
 #footer {
-  background-color: #252831;
-  color: white;
+  background-color: $primary-black;
+  color: $primary-white;
   font-size: 8pt;
   letter-spacing: 1px;
   padding: 25px;
@@ -90,14 +91,14 @@ header h1 {
   padding-top: 23px;
 }
 header h1 {
-  background-color: #252831;
+  background-color: $primary-black;
   margin: 0;
   height: 60px;
   text-align: center;
   width: 100%;
 }
 header h1 a {
-  color: #f58500;
+  color: $primary-orange;
   font-size: 14pt;
   font-weight: 200;
   letter-spacing: 10px;
@@ -115,7 +116,7 @@ header h1 a {
 nav {
 }
 #breadcrumb {
-  background-color: #252831;
+  background-color: $primary-black;
   font-size: 0.8rem;
   list-style: none;
   margin: 0;
@@ -123,39 +124,39 @@ nav {
   width: calc(100% - 40px);
 }
 #breadcrumb li {
-  color: white;
+  color: $primary-white;
   display: inline;
 }
 #breadcrumb li + li:before {
-  color: white;
-  content: "/\00a0";
+  color: $primary-white;
+  content: '/\00a0';
   padding: 8px;
 }
 #breadcrumb li a {
-  color: #f58500;
+  color: $primary-orange;
   text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-  color: white;
+  color: $primary-white;
   text-decoration: underline;
 }
 
 #breadcrumb li .current-page {
-  color: white;
+  color: $primary-white;
 }
 
 /* ====================== Home Map ====================== */
 #map {
-  background-color: #ccc;
+  background-color: $primary-grey;
   height: 400px;
   width: 100%;
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   align-items: center;
-  background-color: #252831;
+  background-color: $primary-black;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -164,7 +165,7 @@ nav {
   width: 100%;
 }
 .filter-options h2 {
-  color: #f58500;
+  color: $primary-orange;
   font-size: 1rem;
   font-weight: 100;
   letter-spacing: px;
@@ -176,8 +177,8 @@ nav {
   width: 100%;
 }
 .filter-options select {
-  background-color: white;
-  border: 1px solid #fff;
+  background-color: $primary-white;
+  border: 1px solid $secondary-grey;
   font-family: Arial, sans-serif;
   font-size: 11pt;
   height: 35px;
@@ -185,12 +186,12 @@ nav {
   margin: 10px;
   padding: 0 10px;
   width: 90%;
-  color: #252831;
+  color: $primary-black;
 }
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
-  background-color: #f3f3f3;
+  background-color: $primary-white;
   display: flex;
   flex-wrap: wrap;
   list-style: outside none none;
@@ -206,8 +207,8 @@ nav {
 }
 
 #restaurants-list li {
-  background-color: #fff;
-  border-bottom: 2px solid #ccc;
+  background-color: $secondary-grey;
+  border-bottom: 2px solid $primary-grey;
   border-radius: 0px 30px 0px 30px;
   margin-top: 30px;
   min-height: 380px;
@@ -244,10 +245,10 @@ nav {
   text-align: right;
 }
 #restaurants-list li a {
-  background-color: #252831;
-  border: 3px solid #eee;
+  background-color: $primary-black;
+  border: 3px solid $secondary-grey;
   border-radius: 12px;
-  color: #f58500;
+  color: $primary-orange;
   display: inline-block;
   float: right;
   font-size: 10pt;
@@ -260,7 +261,7 @@ nav {
 
 /* ====================== Restaurant Details ====================== */
 .inside {
-  background-color: #f3f3f3;
+  background-color: $primary-white;
   width: 100%;
 }
 .inside header {
@@ -282,15 +283,15 @@ nav {
   z-index: -2;
 }
 .inside #map {
-  background-color: #ccc;
+  background-color: $secondary-grey;
   height: 100%;
   width: 100%;
 }
 
 #restaurant-name {
-  background-color: #f3f3f3;
+  background-color: $primary-white;
   border-radius: 0px 60px 0px 0px;
-  color: #252831;
+  color: $primary-black;
   font-family: Arial, sans-serif;
   font-size: 1.5rem;
   font-weight: 200;
@@ -313,8 +314,8 @@ nav {
   text-align: center;
 }
 #restaurant-cuisine {
-  background-color: #333;
-  color: #f58500;
+  background-color: $primary-grey;
+  color: $primary-orange;
   font-size: 1rem;
   font-weight: 300;
   letter-spacing: 10px;
@@ -331,7 +332,7 @@ nav {
   width: 100%;
 }
 #reviews-container h3 {
-  color: #252831;
+  color: $primary-black;
   font-size: 1.7rem;
   font-weight: 300;
   letter-spacing: -1px;
@@ -344,8 +345,8 @@ nav {
   padding: 0;
 }
 #reviews-list li {
-  background-color: #fff;
-  border: 2px solid #f3f3f3;
+  background-color: $secondary-grey;
+  border-top-right-radius: 30px;
   display: block;
   list-style-type: none;
   margin-bottom: 50px;
@@ -361,9 +362,9 @@ nav {
   text-justify: inter-word;
 }
 #reviews-list li p:first-of-type {
-  background: #252831;
+  background: $primary-black;
   border-radius: 0px 20px 0px 0px;
-  color: #f58500;
+  color: $primary-orange;
   font-size: 1rem;
   font-weight: 300;
   letter-spacing: 5px;
@@ -377,5 +378,42 @@ nav {
   padding: 5%;
 }
 #restaurant-hours td {
-  color: #666;
+  color: $secondary-grey;
+}
+
+//throwAlert from https://www.w3schools.com/howto/howto_js_alert.asp
+/* The alert message box */
+#alert-container {
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+}
+
+.alert {
+  opacity: 1;
+  padding: 20px;
+  color: $primary-white;
+  margin-bottom: 15px;
+  &.success {
+    background-color: $primary-green;
+  }
+  &.danger {
+    background-color: $primary-red;
+  }
+}
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: $primary-white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: $primary-black;
 }
