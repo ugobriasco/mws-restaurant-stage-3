@@ -235,3 +235,8 @@ function toggleForm() {
     elm.classList.add('expand');
   }
 }
+
+function handleSubmit() {
+  console.log('click');
+  Alert.throwSuccess('Whoooohaaaaa!');
+}
