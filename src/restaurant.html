@@ -19,7 +19,7 @@
 </head>
 
 <body class="inside">
-
+  <div id="alert-container"></div>
   <header>
     <h1><a href="/" aria-label="link to Home">Restaurant Reviews</a></h1>
   </header>
@@ -63,7 +63,7 @@
           </span>
         </fieldset>
         <textarea name="name" rows="8" cols="80" placeholder="Your review"></textarea>
-        <button type="button" name="button">Submit</button>
+        <button type="button" name="button" onclick="handleSubmit()">Submit</button>
       </form>
     </div>
     <section id="reviews-container">

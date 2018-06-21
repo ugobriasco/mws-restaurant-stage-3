@@ -76,6 +76,7 @@ gulp.task('build-main', function() {
       'src/js/lib/dbhelper.js',
       'src/js/lib/idbhelper.js',
       'src/js/lib/intersection-observer.js',
+      'src/js/lib/alerts-handler.js',
       'src/js/main.js'
     ])
     .pipe(babel())
@@ -95,6 +96,7 @@ gulp.task('build-restaurants', function() {
       'src/js/lib/dbhelper.js',
       'src/js/lib/idbhelper.js',
       'src/js/lib/intersection-observer.js',
+      'src/js/lib/alerts-handler.js',
       'src/js/restaurant_info.js'
     ])
     .pipe(babel())
