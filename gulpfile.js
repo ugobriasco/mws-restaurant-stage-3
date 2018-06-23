@@ -17,7 +17,7 @@ gulp.task('default', ['copy-manifest', 'copy-img', 'build', 'watch']);
 
 gulp.task('watch', function() {
   console.log('👀  Gulp is watching 👀 ');
-  gulp.watch('src/js/**/*.js', ['build']);
+  gulp.watch('src/js/**/*.js', ['scripts']);
   gulp.watch('src/scss/**/*.scss', ['styles', 'build-html']);
   gulp.watch('src/*.html', ['build-html']);
   gulp.watch('./dist/**/*').on('change', browserSync.reload);

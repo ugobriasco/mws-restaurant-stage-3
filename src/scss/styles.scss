@@ -394,8 +394,20 @@ nav {
   padding: 20px;
   color: $primary-white;
   margin-bottom: 15px;
+  will-change: opacity;
+  transition: all 250ms ease-out;
   &.success {
     background-color: $primary-green;
+  }
+  &.warning {
+    background-color: $primary-yellow;
+    color: $primary-black;
+    .closebtn:hover {
+      color: $primary-grey;
+    }
+  }
+  &.info {
+    background-color: $primary-blue;
   }
   &.danger {
     background-color: $primary-red;
@@ -404,7 +416,7 @@ nav {
 /* The close button */
 .closebtn {
   margin-left: 15px;
-  color: $primary-white;
+  color: inherit;
   font-weight: bold;
   float: right;
   font-size: 22px;
@@ -415,5 +427,5 @@ nav {
 
 /* When moving the mouse over the close button */
 .closebtn:hover {
-  color: $primary-black;
+  color: $secondary-grey;
 }
