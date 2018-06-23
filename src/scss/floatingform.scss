@@ -114,9 +114,7 @@ $checked-star: '\2605';
 
         /* the hidden clearer */
         & > .star-cb-clear + label {
-          text-indent: -9999px;
-          width: 0.5em;
-          margin-left: -0.5em;
+          display: none;
         }
         & > .star-cb-clear + label:before {
           width: 0.5em;
@@ -148,9 +146,16 @@ $checked-star: '\2605';
 
     button {
       background-color: $primary-orange;
+      border: solid 1px;
+      border: solid 2px #c26900;
+      border-radius: 5px;
+      font-size: 1.4em;
       color: $primary-black;
       margin-top: 10px;
       flex: 1;
+    }
+    button:active {
+      transform: translateY(4px);
     }
   }
   &.expand {
