@@ -16,6 +16,7 @@ $checked-star: '\2605';
   height: 57px;
   border-radius: 50%;
   background: $primary-black;
+  will-change: auto;
   transition: all 250ms ease-out;
 
   .floating-form-icon-wrapper {
