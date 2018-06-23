@@ -1,6 +1,8 @@
 @charset "utf-8";
 
 $primary-orange: #f58500;
+$darker-orange: darken($primary-orange, 10%);
+
 $primary-grey: #333;
 $secondary-grey: #ccc;
 $primary-white: #fdfdfd;
