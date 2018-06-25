@@ -4,7 +4,7 @@ var map;
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Hello there');
-  fetchReviews();
+  getReviews();
 });
 
 /**
@@ -106,16 +106,11 @@ const fillRestaurantHoursHTML = (
   }
 };
 
-const fetchReviews = () => {
+const getReviews = () => {
   const id = getParameterByName('id');
+  console.log(id);
 
-  console.log('restaurant id: ' + id);
-
-  DBHelper.fetchReviewsFromRestauranId(id, (err, reviews) => {
-    if (!reviews) {
-      console.log('no reviews!');
-      return;
-    }
+  DBHelper.fetchReviews(id, (err, reviews) => {
     fillReviewsHTML(reviews);
   });
 };

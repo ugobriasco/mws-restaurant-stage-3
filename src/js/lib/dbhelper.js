@@ -1,6 +1,7 @@
 /**
  * Common database helper functions.
  */
+
 class DBHelper {
   /**
    * Database URL.
@@ -17,44 +18,74 @@ class DBHelper {
   static fetchRestaurants(callback) {
     fetch(`${DBHelper.DATABASE_URL}/restaurants`)
       .catch(err => {
-        console.log(err, 'connectivity error, serving from cache');
-        IDBHelper.getRestaurants().then(localres => {
-          callback(null, localres);
+        console.log(err, 'connectivity error, serving restaurants from cache');
+        IDBHelper.getRestaurants().then(localRestaurants => {
+          callback(null, localRestaurants);
         });
       })
       .then(res => res.json())
-      .then(arr => {
-        IDBHelper.refreshRestaurants(arr);
-        return arr;
-      })
       .then(restaurants => {
-        IDBHelper.getRestaurants().then(localres => {
-          callback(null, localres);
+        IDBHelper.refreshRestaurants(restaurants);
+      })
+      .then(() => {
+        IDBHelper.getRestaurants().then(localRestaurants => {
+          callback(null, localRestaurants);
         });
       })
       .catch(err => {
-        console.log('Request failed', err);
+        console.log('Requesting restaurants failed', err);
         callback(err);
       });
   }
 
   /**
-   * Fetch All Reviews
+   * Fetch All Reviews from a given Restaurant ID
    */
-  static fetchReviews(id, callback) {
-    const URL = `${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`;
-    return fetch(URL)
+  static fetchReviews(restaurantID, callback) {
+    const URL = `${
+      DBHelper.DATABASE_URL
+    }/reviews/?restaurant_id=${restaurantID}`;
+    console.log(URL);
+    fetch(URL)
+      .catch(err => {
+        console.log(err, 'connectivity error, serving reviews from cache');
+        IDBHelper.getReviews().then(localReviews => {
+          const filteredReviews = localReviews.filter(
+            r => r.restaurant_id == restaurantID
+          );
+          callback(null, filteredReviews);
+        });
+      })
       .then(res => res.json())
-      .then(reviews => callback(null, reviews))
-      .catch(err => console.error(err, 'connectivity error'));
+      .then(reviews => {
+        IDBHelper.refreshReviews(reviews);
+      })
+      .then(() => {
+        IDBHelper.getReviews().then(localReviews => {
+          const filteredReviews = localReviews.filter(
+            r => r.restaurant_id == restaurantID
+          );
+          callback(null, filteredReviews);
+        });
+      })
+      .catch(err => {
+        console.log('Requesting reviews failed', err);
+        callback(err);
+      });
   }
 
-  static fetchReviewsFromRestauranId(id, callback) {
-    DBHelper.fetchReviews(id, (error, reviews) => {
-      if (error) callback(error, null);
-      callback(null, reviews);
-    });
-  }
+  // static fetchReviewsFromRestaurantId(restaurantID, callback) {
+  //   DBHelper.fetchReviews(restaurantID).then();
+  //
+  //   DBHelper.fetchReviews((error, reviews) => {
+  //     if (error) {
+  //       callback(error, null);
+  //     } else {
+  //       const reviewsForRestaurant = reviews.find(r => r.restaurant_id == id);
+  //       callback(null, reviewsForRestaurant);
+  //     }
+  //   });
+  // }
 
   /**
    * Fetch a restaurant by its ID.
