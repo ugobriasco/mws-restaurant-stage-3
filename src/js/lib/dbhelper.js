@@ -74,18 +74,28 @@ class DBHelper {
       });
   }
 
-  // static fetchReviewsFromRestaurantId(restaurantID, callback) {
-  //   DBHelper.fetchReviews(restaurantID).then();
-  //
-  //   DBHelper.fetchReviews((error, reviews) => {
-  //     if (error) {
-  //       callback(error, null);
-  //     } else {
-  //       const reviewsForRestaurant = reviews.find(r => r.restaurant_id == id);
-  //       callback(null, reviewsForRestaurant);
-  //     }
-  //   });
-  // }
+  static postReview(_body) {
+    // const { restaurant_id, name, rating, comments } = body;
+
+    const URL = `${DBHelper.DATABASE_URL}/reviews/`;
+
+    return fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(_body),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .catch(err => {
+        console.log('youre offline! no new review added');
+        // TODO: save in the idb actions table if not yet done
+        return { isOffline: true };
+      })
+      .then(res => {
+        console.log('new review added');
+        return res;
+      });
+  }
 
   /**
    * Fetch a restaurant by its ID.

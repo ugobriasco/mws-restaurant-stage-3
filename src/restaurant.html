@@ -48,11 +48,11 @@
         <img src="./icons/comment.svg" width="35px" alt="">
       </div>
       <span id="close-form-icon">&times;</span>
-      <form class="" action="index.html" method="post">
+      <form class="" id='add-review-form'>
 
         <h3 id="title">Add a review!</h3>
-        <input type="text" name="" value="" placeholder="Your name">
-        <fieldset>
+        <input type="text" id='name' name="name" value="" placeholder="Your name">
+        <fieldset id='rating'>
           <span class="star-cb-group">
             <input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
             <input type="radio" id="rating-4" name="rating" value="4" checked="checked" /><label for="rating-4">4</label>
@@ -62,8 +62,8 @@
             <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>
           </span>
         </fieldset>
-        <textarea name="name" rows="8" cols="80" placeholder="Your review"></textarea>
-        <button type="button" name="button" onclick="handleSubmit()">Submit</button>
+        <textarea name="comments" id='comments' rows="8" cols="80" placeholder="Your review"></textarea>
+        <button type="button" name="button" onClick="handleSubmit()">Submit</button>
       </form>
     </div>
     <section id="reviews-container">

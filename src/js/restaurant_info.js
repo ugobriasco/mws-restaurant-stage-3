@@ -108,8 +108,6 @@ const fillRestaurantHoursHTML = (
 
 const getReviews = () => {
   const id = getParameterByName('id');
-  console.log(id);
-
   DBHelper.fetchReviews(id, (err, reviews) => {
     fillReviewsHTML(reviews);
   });
@@ -232,6 +230,29 @@ function toggleForm() {
 }
 
 function handleSubmit() {
-  console.log('click');
-  Alert.throwSuccess('Whoooohaaaaa!');
+  const body = {
+    restaurant_id: getParameterByName('id'),
+    name: document.getElementById('name').value,
+    rating: getRating(),
+    comments: document.getElementById('comments').value
+  };
+
+  console.log(body);
+
+  DBHelper.postReview(body).then(res => {
+    console.log(res);
+    Alert.throwSuccess('New review!');
+  });
+}
+
+function getRating() {
+  const radio = document.getElementById('rating').elements;
+  let review = 0;
+  for (let i = 0; i < radio.length; i++) {
+    if (radio[i].checked) {
+      review = rating.elements[i].value;
+      break;
+    }
+  }
+  return review;
 }
