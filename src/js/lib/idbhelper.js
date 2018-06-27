@@ -3,6 +3,7 @@ let dbPromise = idb.open('restaurants-review-db', 1, upgradeDb => {
     keyPath: 'id'
   });
   let reviewsStore = upgradeDb.createObjectStore('reviews', { keyPath: 'id' });
+  let actionsStore = upgradeDb.createObjectStore('actions', { keyPath: 'id' });
 });
 
 class IDBHelper {
@@ -44,6 +45,38 @@ class IDBHelper {
         const tx = db.transaction('restaurants');
         const store = tx.objectStore('restaurants');
         return store.getAll();
+      })
+      .catch(err => console.log(err));
+  }
+
+  static getActions() {
+    return dbPromise
+      .then(db => {
+        const tx = db.transaction('actions');
+        const store = tx.objectStore('actions');
+        return store.getAll();
+      })
+      .catch(err => console.log(err));
+  }
+
+  static addAction(restaurant_id, type, body) {
+    const action = { restaurant_id, type, body };
+    dbPromise.then(db => {
+      const tx = db.transaction('actions', 'readwrite');
+      const store = tx.objectStore('actions');
+      reviews.map(action => {
+        tx.objectStore('actions').add(action);
+      });
+      return tx.complete;
+    });
+  }
+
+  static deleteAction(key) {
+    return dbPromise
+      .then(db => {
+        const tx = db.transaction('actions', 'readwrite');
+        tx.objectStore('actions').delete(key);
+        return tx.complete;
       })
       .catch(err => console.log(err));
   }
