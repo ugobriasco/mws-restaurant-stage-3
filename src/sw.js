@@ -23,6 +23,7 @@ self.addEventListener('install', event => {
           './img/w600_9.webp',
           './img/w600_10.webp',
           './icons/burger512.png',
+          './icons/comment.svg',
           './favicon.ico',
           './manifest.json'
         ]);
