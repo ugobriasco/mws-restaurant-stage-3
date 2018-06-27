@@ -41,6 +41,8 @@ class Alert {
   static renderAlertBanner({ container = DEFAULT_CONTAINER, type, text }) {
     const bannerId = new Date().getUTCMilliseconds().toString();
 
+    console.log(`${type} alert ${bannerId}`);
+
     const _closeBtn = document.createElement('span');
     _closeBtn.classList.add('closebtn');
     _closeBtn.innerHTML = '&times';
