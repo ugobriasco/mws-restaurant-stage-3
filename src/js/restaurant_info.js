@@ -242,6 +242,7 @@ function handleSubmit() {
   DBHelper.postReview(body).then(res => {
     console.log(res);
     Alert.throwSuccess('New review!');
+    getReviews();
   });
 }
 
