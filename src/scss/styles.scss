@@ -351,6 +351,7 @@ nav {
   list-style-type: none;
   margin-bottom: 50px;
   margin-left: 5%;
+  padding-bottom: 20px;
   position: relative;
   width: 90%;
 }
@@ -378,7 +379,7 @@ nav {
   padding: 5%;
 }
 #restaurant-hours td {
-  color: $secondary-grey;
+  color: $primary-black;
 }
 
 //throwAlert from https://www.w3schools.com/howto/howto_js_alert.asp
