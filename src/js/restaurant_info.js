@@ -108,11 +108,23 @@ const fillRestaurantHoursHTML = (
 
 const getReviews = () => {
   const restaurantID = getParameterByName('id');
-  fetchActions().then(() => {
-    DBHelper.fetchReviews(restaurantID, (err, reviews) => {
-      fillReviewsHTML(reviews);
+  fetchActions()
+    .then(() => {
+      IDBHelper.getActions().then(actions => {
+        console.log('here some actions', actions);
+        const offlineReviews = actions
+          .filter(
+            a => a.type === 'REVIEW' && a.body.restaurant_id == restaurantID
+          )
+          .map(a => a.body);
+        fillReviewsHTML(offlineReviews);
+      });
+    })
+    .then(() => {
+      DBHelper.fetchReviews(restaurantID, (err, reviews) => {
+        fillReviewsHTML(reviews);
+      });
     });
-  });
 };
 
 const fetchActions = () => {
@@ -121,10 +133,9 @@ const fetchActions = () => {
     .then(actions => {
       actions.forEach(action => {
         if (action.type === 'REVIEW') {
-          return DBHelper.postReview(action.body).then(() => {
-            IDBHelper.deleteAction(action.id);
-            console.log('action' + action.id + 'deleted');
-          });
+          DBHelper.postReview(action.body).then(() =>
+            IDBHelper.deleteAction(action.id)
+          );
         } else {
           console.log('uknown action type' + action);
         }
@@ -178,9 +189,11 @@ const createReviewHTML = review => {
 
   const date = document.createElement('p');
 
-  const formattedDate = formatDate(review.updatedAt);
+  const formattedDate = review.updatedAt
+    ? formatDate(review.updatedAt)
+    : 'This review is still offline and will be published as son as possible';
 
-  date.innerHTML = formattedDate || '';
+  date.innerHTML = formattedDate;
   li.appendChild(date);
 
   const rating = document.createElement('p');
