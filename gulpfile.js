@@ -102,6 +102,7 @@ gulp.task('build-restaurants', function() {
     .pipe(babel())
     .pipe(concat('restaurant_info.js'))
     .pipe(rename('restaurant_info.js'))
+    .pipe(uglify())
     .on('error', function(err) {
       gutil.log(gutil.colors.red('[Error]'), err.toString());
     })

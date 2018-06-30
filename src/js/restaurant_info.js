@@ -3,7 +3,6 @@ let reviews;
 var map;
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Hello there');
   getReviews();
 });
 
@@ -128,7 +127,6 @@ const getReviews = () => {
 };
 
 const fetchActions = () => {
-  console.log('fetching actions');
   return IDBHelper.getActions()
     .then(actions => {
       actions.forEach(action => {
@@ -141,14 +139,13 @@ const fetchActions = () => {
         }
       });
     })
-    .catch(err => console.log('fetching acions' + err));
+    .catch(err => console.log('fetching actions throws an error' + err));
 };
 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
-  console.log(reviews);
   const container = document.getElementById('reviews-container');
 
   if (!document.getElementById('section-review-title')) {
@@ -166,7 +163,6 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   }
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
-    console.log(review);
     const reviewID = `review-${review.id}`;
     if (!document.getElementById(reviewID)) {
       ul.appendChild(createReviewHTML(review));
@@ -179,7 +175,6 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = review => {
-  console.log(review);
   const li = document.createElement('li');
   li.setAttribute('id', `review-${review.id}`);
 
