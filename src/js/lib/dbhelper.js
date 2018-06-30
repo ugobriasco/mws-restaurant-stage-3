@@ -45,7 +45,6 @@ class DBHelper {
     const URL = `${
       DBHelper.DATABASE_URL
     }/reviews/?restaurant_id=${restaurantID}`;
-    console.log(URL);
     fetch(URL)
       .catch(err => {
         console.log(err, 'connectivity error, serving reviews from cache');
@@ -74,18 +73,7 @@ class DBHelper {
       });
   }
 
-  static fetchActions() {
-    IDBHelper.getActions().then(actions =>
-      actions.forEach(action => {
-        console.log(action);
-        //TODO manage actions
-      })
-    );
-  }
-
   static postReview(_body) {
-    // const { restaurant_id, name, rating, comments } = body;
-
     const URL = `${DBHelper.DATABASE_URL}/reviews/`;
 
     return fetch(URL, {
