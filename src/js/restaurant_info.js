@@ -156,7 +156,7 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     console.log(review);
-    const reviewID = `review-from-${review.name.toLowerCase()}`;
+    const reviewID = `review-${review.id}`;
     if (!document.getElementById(reviewID)) {
       ul.appendChild(createReviewHTML(review));
     }
@@ -168,8 +168,9 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = review => {
+  console.log(review);
   const li = document.createElement('li');
-  li.setAttribute('id', `review-from-${review.name.toLowerCase()}`);
+  li.setAttribute('id', `review-${review.id}`);
 
   const name = document.createElement('p');
   name.innerHTML = review.name;
@@ -224,7 +225,7 @@ const getParameterByName = (name, url) => {
 };
 
 const formatDate = unix_timestamp => {
-  return new Date(unix_timestamp * 1000).toString();
+  return new Date(unix_timestamp).toUTCString();
 };
 
 // Reviews
