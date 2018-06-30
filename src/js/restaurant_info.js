@@ -107,10 +107,30 @@ const fillRestaurantHoursHTML = (
 };
 
 const getReviews = () => {
-  const id = getParameterByName('id');
-  DBHelper.fetchReviews(id, (err, reviews) => {
-    fillReviewsHTML(reviews);
+  const restaurantID = getParameterByName('id');
+  fetchActions().then(() => {
+    DBHelper.fetchReviews(restaurantID, (err, reviews) => {
+      fillReviewsHTML(reviews);
+    });
   });
+};
+
+const fetchActions = () => {
+  console.log('fetching actions');
+  return IDBHelper.getActions()
+    .then(actions => {
+      actions.forEach(action => {
+        if (action.type === 'REVIEW') {
+          return DBHelper.postReview(action.body).then(() => {
+            IDBHelper.deleteAction(action.id);
+            console.log('action' + action.id + 'deleted');
+          });
+        } else {
+          console.log('uknown action type' + action);
+        }
+      });
+    })
+    .catch(err => console.log('fetching acions' + err));
 };
 
 /**
@@ -135,6 +155,7 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   }
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
+    console.log(review);
     const reviewID = `review-from-${review.name.toLowerCase()}`;
     if (!document.getElementById(reviewID)) {
       ul.appendChild(createReviewHTML(review));
@@ -231,7 +252,7 @@ function toggleForm() {
 
 function handleSubmit() {
   const body = {
-    restaurant_id: getParameterByName('id'),
+    restaurant_id: parseInt(getParameterByName('id')),
     name: document.getElementById('name').value,
     rating: getRating(),
     comments: document.getElementById('comments').value
@@ -241,8 +262,14 @@ function handleSubmit() {
 
   DBHelper.postReview(body).then(res => {
     console.log(res);
-    Alert.throwSuccess('New review!');
-    getReviews();
+    if (res.isOffline) {
+      Alert.throwWarning('You are offline! Your review will be posted later');
+      return;
+    } else {
+      Alert.throwSuccess('New review!');
+      getReviews();
+      return;
+    }
   });
 }
 
