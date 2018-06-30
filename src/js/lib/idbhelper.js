@@ -59,14 +59,13 @@ class IDBHelper {
       .catch(err => console.log(err));
   }
 
-  static addAction(restaurant_id, type, body) {
-    const action = { restaurant_id, type, body };
-    dbPromise.then(db => {
+  static addAction(type, body) {
+    const id = getUID();
+    const action = { id, type, body };
+    return dbPromise.then(db => {
       const tx = db.transaction('actions', 'readwrite');
       const store = tx.objectStore('actions');
-      reviews.map(action => {
-        tx.objectStore('actions').add(action);
-      });
+      tx.objectStore('actions').put(action);
       return tx.complete;
     });
   }
@@ -80,4 +79,8 @@ class IDBHelper {
       })
       .catch(err => console.log(err));
   }
+}
+
+function getUID() {
+  return new Date().getUTCMilliseconds();
 }

@@ -74,6 +74,15 @@ class DBHelper {
       });
   }
 
+  static fetchActions() {
+    IDBHelper.getActions().then(actions =>
+      actions.forEach(action => {
+        console.log(action);
+        //TODO manage actions
+      })
+    );
+  }
+
   static postReview(_body) {
     // const { restaurant_id, name, rating, comments } = body;
 
@@ -88,8 +97,12 @@ class DBHelper {
     })
       .catch(err => {
         console.log('youre offline! no new review added');
-        // TODO: save in the idb actions table if not yet done
-        return { isOffline: true };
+        return IDBHelper.addAction('REVIEW', _body)
+          .then(() => ({ isOffline: true }))
+          .catch(err => {
+            console.log(err);
+            return new Error(err);
+          });
       })
       .then(res => {
         console.log('new review added');
