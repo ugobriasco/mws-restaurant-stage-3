@@ -268,6 +268,7 @@ function handleSubmit() {
   };
   DBHelper.postReview(body).then(res => {
     toggleForm();
+    document.getElementById('add-review-form').reset();
     if (res.isOffline) {
       Alert.throwWarning(
         'You are offline! Your review will be submitted later'
