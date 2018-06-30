@@ -111,7 +111,6 @@ const getReviews = () => {
   fetchActions()
     .then(() => {
       IDBHelper.getActions().then(actions => {
-        console.log('here some actions', actions);
         const offlineReviews = actions
           .filter(
             a => a.type === 'REVIEW' && a.body.restaurant_id == restaurantID
@@ -122,7 +121,8 @@ const getReviews = () => {
     })
     .then(() => {
       DBHelper.fetchReviews(restaurantID, (err, reviews) => {
-        fillReviewsHTML(reviews);
+        const sortedReviews = reviews.sort((a, b) => a.id < b.id);
+        fillReviewsHTML(sortedReviews);
       });
     });
 };
@@ -237,12 +237,7 @@ const getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
-const formatDate = unix_timestamp => {
-  return new Date(unix_timestamp).toUTCString();
-};
-
 // Reviews
-
 function openForm() {
   const elm = document.getElementById('floating-form');
   if (elm.classList.contains('expand')) return;
@@ -271,18 +266,16 @@ function handleSubmit() {
     rating: getRating(),
     comments: document.getElementById('comments').value
   };
-
-  console.log(body);
-
   DBHelper.postReview(body).then(res => {
     toggleForm();
     if (res.isOffline) {
-      Alert.throwWarning('You are offline! Your review will be posted later');
-      return;
+      Alert.throwWarning(
+        'You are offline! Your review will be submitted later'
+      );
+      return getReviews();
     } else {
-      Alert.throwSuccess('New review!');
-      getReviews();
-      return;
+      Alert.throwSuccess('Your review was published!');
+      return getReviews();
     }
   });
 }
@@ -297,4 +290,8 @@ function getRating() {
     }
   }
   return review;
+}
+
+function formatDate(unix_timestamp) {
+  return new Date(unix_timestamp).toUTCString();
 }
