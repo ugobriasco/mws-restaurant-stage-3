@@ -4,14 +4,15 @@
     padding-right: 20px;
     width: calc(100% - 65px);
   }
-  #reviews-list {
+  .reviews-list {
     display: flex;
+    flex-flow: row wrap;
   }
 
   #restaurants-list li,
-  #reviews-list li {
+  .reviews-list li {
     margin: 18px 18px 18px 18px;
-    width: calc(33.33% - 40px);
+    width: calc(33.3% - 36px);
   }
 }
 
@@ -25,8 +26,8 @@
 
   .filter-options {
     flex-direction: row;
-    padding-left: calc((100% - 1079px) /2);
-    padding-right: calc((100% - 1079px) /2);
+    padding-left: calc((100% - 1079px) / 2);
+    padding-right: calc((100% - 1079px) / 2);
     width: 1079px;
   }
 }
