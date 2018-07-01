@@ -12,6 +12,14 @@ class DBHelper {
     return `http://localhost:${port}`;
   }
 
+  static checkConnectivity() {
+    return fetch(DBHelper.DATABASE_URL, { method: 'HEAD' }).catch(err => {
+      console.log('You are offline');
+      Alert.throwWarning('You are offline!');
+      return err;
+    });
+  }
+
   /**
    * Fetch all restaurants.
    */

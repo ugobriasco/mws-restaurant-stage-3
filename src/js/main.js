@@ -6,6 +6,7 @@ var markers = [];
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', event => {
+  DBHelper.checkConnectivity();
   fetchNeighborhoods();
   fetchCuisines();
   DBHelper.fetchActions(); //sync offline cashed events

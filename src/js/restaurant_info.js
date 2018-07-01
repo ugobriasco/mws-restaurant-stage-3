@@ -3,6 +3,7 @@ let reviews;
 var map;
 
 document.addEventListener('DOMContentLoaded', () => {
+  DBHelper.checkConnectivity();
   getReviews();
 });
 
