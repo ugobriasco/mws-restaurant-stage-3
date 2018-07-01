@@ -73,6 +73,21 @@ class DBHelper {
       });
   }
 
+  static fetchActions() {
+    return IDBHelper.getActions().then(actions => {
+      actions.forEach(action => {
+        if (action.type === 'REVIEW') {
+          return DBHelper.postReview(action.body).then(() => {
+            return IDBHelper.deleteAction(action.id);
+          });
+        } else {
+          console.log('uknown action type' + action);
+          return;
+        }
+      });
+    });
+  }
+
   static postReview(_body) {
     const URL = `${DBHelper.DATABASE_URL}/reviews/`;
 
