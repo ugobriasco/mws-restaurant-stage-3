@@ -274,6 +274,14 @@ function handleSubmit() {
     rating: getRating(),
     comments: document.getElementById('comments').value
   };
+
+  if (body.name === '') {
+    Alert.throwDanger(
+      'Noone likes anonymous reviews. Please enter your name before submitting your evaluation'
+    );
+    return;
+  }
+
   DBHelper.postReview(body).then(res => {
     toggleForm();
     document.getElementById('add-review-form').reset();
