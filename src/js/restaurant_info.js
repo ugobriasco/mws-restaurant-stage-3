@@ -54,6 +54,7 @@ const fetchRestaurantFromURL = callback => {
         console.error(error);
         return;
       }
+      console.log(restaurant);
       fillRestaurantHTML();
       callback(null, restaurant);
     });
@@ -284,6 +285,26 @@ function handleSubmit() {
       return getReviews();
     }
   });
+}
+
+// favorite
+const getFavoriteRestaurant = () => {
+  const id = getParameterByName('id');
+  return IDBHelper.getActions()
+    .filter(a => a.type === 'FAVORITE')
+    .filter(a.body.restaurant_id === id);
+};
+
+function isRestaurantFavorite() {
+  getFavoriteRestaurant().then(arr => {
+    console.log(arr);
+    if (arr.length < 1) return false;
+    else true;
+  });
+}
+
+function toggleFavorite() {
+  console.log('click on vavorite');
 }
 
 function getRating() {
