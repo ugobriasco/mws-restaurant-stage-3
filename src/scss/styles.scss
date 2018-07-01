@@ -227,6 +227,13 @@ nav {
   min-height: 248px;
 }
 
+#restaurants-list li .fav-container {
+  z-index: 20;
+  float: right;
+  margin-top: -95px;
+  margin-left: 39%;
+}
+
 #restaurants-list li h2 {
   border-radius: 0px 30px 0px 0px;
   font-size: 1.2rem;
@@ -276,7 +283,7 @@ nav {
 }
 .inside #map-container {
   background: none repeat scroll 0 0;
-  height: 600px;
+  height: 850px;
   position: fixed;
   top: 0px;
   width: 100%;
@@ -382,6 +389,19 @@ nav {
   color: $primary-black;
 }
 
+#restaurant-favorite {
+  padding: 5%;
+  display: inline-flex;
+  p {
+    padding-left: 5px;
+    flex: 1;
+    font-weight: bold;
+  }
+  label {
+    flex: 0.2;
+  }
+}
+
 //throwAlert from https://www.w3schools.com/howto/howto_js_alert.asp
 /* The alert message box */
 #alert-container {
@@ -429,4 +449,71 @@ nav {
 /* When moving the mouse over the close button */
 .closebtn:hover {
   color: $secondary-grey;
+}
+
+// favorite
+$heart-width: 14px;
+$heart-height: 24px;
+$hr: 45deg;
+$hl: $hr - ($hr * 2);
+$heart-color: $primary-orange;
+
+.favorite {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-color: $primary-black;
+  overflow: hidden;
+  border: 5px solid $heart-color;
+  border-radius: 100px;
+  cursor: pointer;
+  &_heart {
+    position: absolute;
+    top: 8px;
+    left: 9px;
+    &__left {
+      background: $heart-color;
+      width: $heart-width;
+      height: $heart-height;
+      transform: rotate($hl);
+      position: absolute;
+      left: 0px;
+      border-top-right-radius: 30px;
+      border-top-left-radius: 30px;
+    }
+    &__right {
+      background: $heart-color;
+      width: $heart-width;
+      height: $heart-height;
+      transform: rotate($hr);
+      position: absolute;
+      left: 8px;
+      border-top-right-radius: 30px;
+      border-top-left-radius: 30px;
+    }
+  }
+}
+.toggle {
+  .favorite_heart {
+    transition: all 0.4 ease-in;
+    top: -26px;
+  }
+  &:hover {
+    transform: translateY(4px);
+  }
+  &:focus {
+    border-color: $primary-black;
+  }
+}
+input[type='checkbox'] {
+  display: none;
+}
+input[type='checkbox']:not(checked) + label > .favorite .favorite-heart {
+  transform: translateY(34px);
+}
+input[type='checkbox']:checked + label > .favorite .favorite_heart {
+  transform: translateY(34px);
+}
+input[type='checkbox']:focus + label::before {
+  transform: translateY(4px);
 }

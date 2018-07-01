@@ -196,6 +196,7 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 const createRestaurantHTML = restaurant => {
+  console.log(restaurant.name, restaurant.is_favorite);
   const dataSrc = document.createAttribute('data-src');
   dataSrc.value = DBHelper.imageUrlForRestaurant(restaurant);
 
@@ -221,9 +222,32 @@ const createRestaurantHTML = restaurant => {
   more.setAttribute('aria-label', 'More details about' + restaurant.name);
   more.href = DBHelper.urlForRestaurant(restaurant);
 
+  const favorite = document.createElement('div');
+  favorite.classList.add('fav-container');
+
+  if (restaurant.is_favorite == 'true') {
+    const favoriteWrapper = document.createElement('div');
+    favoriteWrapper.classList.add('favorite');
+
+    const heart = document.createElement('div');
+    heart.classList.add('favorite_heart');
+
+    const heartLeft = document.createElement('div');
+    heartLeft.classList.add('favorite_heart__left');
+
+    const heartRight = document.createElement('div');
+    heartRight.classList.add('favorite_heart__right');
+
+    heart.append(heartLeft);
+    heart.append(heartRight);
+    favoriteWrapper.append(heart);
+    favorite.append(favoriteWrapper);
+  }
+
   const li = document.createElement('li');
 
   li.append(name);
+  li.append(favorite);
   li.append(image);
   li.append(neighborhood);
   li.append(address);

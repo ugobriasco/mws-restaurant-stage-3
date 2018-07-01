@@ -79,6 +79,16 @@ class IDBHelper {
       })
       .catch(err => console.log(err));
   }
+
+  static setAction(key, body) {
+    return dbPromise
+      .then(db => {
+        const tx = db.transaction('actions', 'readwrite');
+        tx.objectStore('actions').put(body, key);
+        return tx.complete;
+      })
+      .catch(err => console.log(err));
+  }
 }
 
 function getUID() {

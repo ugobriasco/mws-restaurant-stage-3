@@ -39,6 +39,18 @@
       <p id="restaurant-cuisine"></p>
       <p id="restaurant-address" tabindex="0"></p>
       <table id="restaurant-hours" tabindex="0"></table>
+      <div id="restaurant-favorite">
+          <input type="checkbox" id='toggle-favorite' onClick="toggleFavorite()">
+          <label for='toggle-favorite'>
+            <div class="favorite toggle">
+              <div class="favorite_heart">
+                <div class="favorite_heart__left"></div>
+                <div class="favorite_heart__right"></div>
+              </div>
+            </div>
+          </label>
+          <p>Add this restaurant to your favorites</p>
+      </div>
     </section>
 
     <div class="floating-form" id="floating-form">
@@ -74,7 +86,7 @@
 
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBV35fUoGLVq9aIRmCiMZBRJW7c0KIBnbg&libraries=places&callback=initMap"></script>
-  <script>
+  <!-- <script>
   if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
@@ -85,7 +97,7 @@
       .catch(err => console.log('SW registration failed', err));
   });
 }
-</script>
+</script> -->
 
 
 
