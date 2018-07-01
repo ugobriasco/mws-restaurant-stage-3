@@ -48,8 +48,8 @@
       <span id="close-form-icon">&times;</span>
       <form class="" id='add-review-form'>
         <h3 id="title">Add a review!</h3>
-        <input type="text" id='name' name="name" value="" placeholder="Your name">
-        <fieldset id='rating'>
+        <input type="text" id='name' name="name" value="" aria-label='What is your name?' placeholder="Your name" required>
+        <fieldset id='rating' aria-label='Could you rate the restaurant form 1 to 5 stars?' required>
           <span class="star-cb-group">
             <input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
             <input type="radio" id="rating-4" name="rating" value="4" checked="checked" /><label for="rating-4">4</label>
@@ -59,8 +59,8 @@
             <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>
           </span>
         </fieldset>
-        <textarea name="comments" id='comments' rows="8" cols="80" placeholder="Your review"></textarea>
-        <button type="button" name="button" onClick="handleSubmit()">Submit</button>
+        <textarea name="comments" id='comments' rows="8" cols="80" placeholder="Your review" aria-label="Whould you like to leave an additional comment?"></textarea>
+        <button type="button" name="button" onClick="handleSubmit()" aria-label="Submit your review!">Submit</button>
       </form>
     </div>
     <section id="reviews-container">
