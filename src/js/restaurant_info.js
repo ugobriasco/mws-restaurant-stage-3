@@ -127,19 +127,7 @@ const getReviews = () => {
 };
 
 const fetchActions = () => {
-  return IDBHelper.getActions()
-    .then(actions => {
-      actions.forEach(action => {
-        if (action.type === 'REVIEW') {
-          DBHelper.postReview(action.body).then(() =>
-            IDBHelper.deleteAction(action.id)
-          );
-        } else {
-          console.log('uknown action type' + action);
-        }
-      });
-    })
-    .catch(err => console.log('fetching actions throws an error' + err));
+  return DBHelper.fetchActions();
 };
 
 /**

@@ -8,6 +8,7 @@ var markers = [];
 document.addEventListener('DOMContentLoaded', event => {
   fetchNeighborhoods();
   fetchCuisines();
+  DBHelper.fetchActions(); //sync offline cashed events
 });
 
 /**
