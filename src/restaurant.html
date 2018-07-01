@@ -41,15 +41,12 @@
       <table id="restaurant-hours" tabindex="0"></table>
     </section>
 
-
-
     <div class="floating-form" id="floating-form">
       <div class="floating-form-icon-wrapper" onClick="toggleForm()">
         <img src="./icons/comment.svg" width="35px" alt="">
       </div>
       <span id="close-form-icon">&times;</span>
       <form class="" id='add-review-form'>
-
         <h3 id="title">Add a review!</h3>
         <input type="text" id='name' name="name" value="" placeholder="Your name">
         <fieldset id='rating'>
@@ -67,7 +64,8 @@
       </form>
     </div>
     <section id="reviews-container">
-      <ul id="reviews-list"></ul>
+      <ul id="offline-reviews-list" class='reviews-list'></ul>
+      <ul id="reviews-list"class='reviews-list'></ul>
     </section>
   </main>
   <footer id="footer">

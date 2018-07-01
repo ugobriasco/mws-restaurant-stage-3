@@ -115,7 +115,7 @@ const getReviews = () => {
             a => a.type === 'REVIEW' && a.body.restaurant_id == restaurantID
           )
           .map(a => a.body);
-        fillReviewsHTML(offlineReviews);
+        fillReviewsHTML(offlineReviews, { offline: true });
       });
     })
     .then(() => {
@@ -145,7 +145,7 @@ const fetchActions = () => {
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = (reviews = [], opt = {}) => {
   const container = document.getElementById('reviews-container');
 
   if (!document.getElementById('section-review-title')) {
@@ -161,14 +161,27 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
+  const reviewsList = document.getElementById('reviews-list');
+  const offlineReviewsList = document.getElementById('offline-reviews-list');
+
+  if (opt.offline) {
+    reviews.forEach(review => {
+      const reviewID = `review-${review.id}`;
+      if (!document.getElementById(reviewID)) {
+        offlineReviewsList.appendChild(createReviewHTML(review));
+      }
+    });
+    container.appendChild(offlineReviewsList);
+    return;
+  }
+
   reviews.forEach(review => {
     const reviewID = `review-${review.id}`;
     if (!document.getElementById(reviewID)) {
-      ul.appendChild(createReviewHTML(review));
+      reviewsList.appendChild(createReviewHTML(review));
     }
   });
-  container.appendChild(ul);
+  container.appendChild(reviewsList);
 };
 
 /**

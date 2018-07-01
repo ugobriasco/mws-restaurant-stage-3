@@ -340,11 +340,11 @@ nav {
   padding-top: 10px;
   text-align: center;
 }
-#reviews-list {
+.reviews-list {
   margin: 0;
   padding: 0;
 }
-#reviews-list li {
+.reviews-list li {
   background-color: $secondary-grey;
   border-top-right-radius: 30px;
   display: block;
@@ -355,14 +355,14 @@ nav {
   position: relative;
   width: 90%;
 }
-#reviews-list li p {
+.reviews-list li p {
   margin: 0 0 10px;
   padding-left: 5%;
   padding-right: 5%;
   text-align: justify;
   text-justify: inter-word;
 }
-#reviews-list li p:first-of-type {
+.reviews-list li p:first-of-type {
   background: $primary-black;
   border-radius: 0px 20px 0px 0px;
   color: $primary-orange;
