@@ -466,7 +466,7 @@ $heart-color: $primary-orange;
   overflow: hidden;
   border: 5px solid $heart-color;
   border-radius: 100px;
-  cursor: pointer;
+
   &_heart {
     position: absolute;
     top: 8px;
@@ -497,6 +497,7 @@ $heart-color: $primary-orange;
   .favorite_heart {
     transition: all 0.4 ease-in;
     top: -26px;
+    cursor: pointer;
   }
   &:hover {
     transform: translateY(4px);

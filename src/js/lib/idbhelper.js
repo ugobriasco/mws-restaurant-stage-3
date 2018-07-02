@@ -80,11 +80,12 @@ class IDBHelper {
       .catch(err => console.log(err));
   }
 
-  static setAction(key, body) {
+  static setAction(key, type, body) {
+    const action = { type, body };
     return dbPromise
       .then(db => {
         const tx = db.transaction('actions', 'readwrite');
-        tx.objectStore('actions').put(body, key);
+        tx.objectStore('actions').put(action, key);
         return tx.complete;
       })
       .catch(err => console.log(err));
