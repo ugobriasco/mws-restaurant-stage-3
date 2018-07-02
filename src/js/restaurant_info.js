@@ -4,6 +4,7 @@ var map;
 
 document.addEventListener('DOMContentLoaded', () => {
   DBHelper.checkConnectivity();
+  initToggleFavorite();
   getReviews();
 });
 
@@ -109,7 +110,7 @@ const fillRestaurantHoursHTML = (
 
 const getReviews = () => {
   const restaurantID = getParameterByName('id');
-  fetchActions()
+  DBHelper.fetchOfflineReviews()
     .then(() => {
       IDBHelper.getActions().then(actions => {
         const offlineReviews = actions
@@ -127,11 +128,6 @@ const getReviews = () => {
       });
     });
 };
-
-const fetchActions = () => {
-  return DBHelper.fetchActions();
-};
-
 /**
  * Create all reviews HTML and add them to the webpage.
  */
@@ -287,24 +283,51 @@ function handleSubmit() {
   });
 }
 
-// favorite
-const getFavoriteRestaurant = () => {
-  const id = getParameterByName('id');
-  return IDBHelper.getActions()
-    .filter(a => a.type === 'FAVORITE')
-    .filter(a.body.restaurant_id === id);
-};
+function getFavorite() {
+  const restaurant_id = getParameterByName('id');
+  return IDBHelper.getActions().then(actions =>
+    actions.filter(
+      a => a.type === 'FAVORITE' && a.body.restaurant_id === restaurant_id
+    )
+  );
+}
 
-function isRestaurantFavorite() {
-  getFavoriteRestaurant().then(arr => {
-    console.log(arr);
-    if (arr.length < 1) return false;
-    else true;
+function initToggleFavorite() {
+  const ctaStr = document.getElementById('favorite-cta-string');
+
+  getFavorite().then(arr => {
+    if (arr.length > 0) {
+      ctaStr.innerHTML = isFavoriteMessage(true);
+      document
+        .getElementById('toggle-favorite')
+        .setAttribute('checked', 'true');
+    } else {
+      ctaStr.innerHTML = isFavoriteMessage(false);
+    }
   });
 }
 
 function toggleFavorite() {
-  console.log('click on vavorite');
+  const restaurant_id = getParameterByName('id');
+  const ctaStr = document.getElementById('favorite-cta-string');
+  getFavorite().then(arr => {
+    if (arr.length > 0) {
+      ctaStr.innerHTML = isFavoriteMessage(false);
+      return IDBHelper.deleteAction(arr[0].id);
+    } else {
+      ctaStr.innerHTML = isFavoriteMessage(true);
+      return IDBHelper.addAction('FAVORITE', {
+        restaurant_id,
+        is_favorite: 'true'
+      });
+    }
+  });
+}
+
+function isFavoriteMessage(isFavorite) {
+  const didFavorite = 'This restaurant is marked as favorite';
+  const willFavorite = 'Make this restaurant your favorite!';
+  return isFavorite ? didFavorite : willFavorite;
 }
 
 function getRating() {

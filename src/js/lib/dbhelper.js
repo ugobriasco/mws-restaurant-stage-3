@@ -13,7 +13,9 @@ class DBHelper {
   }
 
   static checkConnectivity() {
-    return fetch(DBHelper.DATABASE_URL, { method: 'HEAD' }).catch(err => {
+    return fetch(`${DBHelper.DATABASE_URL}/restaurants`, {
+      method: 'HEAD'
+    }).catch(err => {
       console.log('You are offline');
       Alert.throwWarning('You are offline!');
       return err;
@@ -81,16 +83,13 @@ class DBHelper {
       });
   }
 
-  static fetchActions() {
+  static fetchOfflineReviews() {
     return IDBHelper.getActions().then(actions => {
       actions.forEach(action => {
         if (action.type === 'REVIEW') {
           return DBHelper.postReview(action.body).then(() => {
             return IDBHelper.deleteAction(action.id);
           });
-        } else {
-          console.log('uknown action type' + action);
-          return;
         }
       });
     });

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', event => {
   DBHelper.checkConnectivity();
   fetchNeighborhoods();
   fetchCuisines();
-  DBHelper.fetchActions(); //sync offline cashed events
+  DBHelper.fetchOfflineReviews(); //sync offline cashed events
 });
 
 /**
@@ -196,7 +196,6 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 const createRestaurantHTML = restaurant => {
-  console.log(restaurant.name, restaurant.is_favorite);
   const dataSrc = document.createAttribute('data-src');
   dataSrc.value = DBHelper.imageUrlForRestaurant(restaurant);
 
@@ -225,24 +224,33 @@ const createRestaurantHTML = restaurant => {
   const favorite = document.createElement('div');
   favorite.classList.add('fav-container');
 
-  if (restaurant.is_favorite == 'true') {
-    const favoriteWrapper = document.createElement('div');
-    favoriteWrapper.classList.add('favorite');
+  isFavorite(restaurant.id).then(isFavorite => {
+    if (isFavorite) {
+      // set isFavorite Stamp
+      const favoriteWrapper = document.createElement('div');
+      favoriteWrapper.classList.add('favorite');
 
-    const heart = document.createElement('div');
-    heart.classList.add('favorite_heart');
+      const heart = document.createElement('div');
+      heart.classList.add('favorite_heart');
 
-    const heartLeft = document.createElement('div');
-    heartLeft.classList.add('favorite_heart__left');
+      const heartLeft = document.createElement('div');
+      heartLeft.classList.add('favorite_heart__left');
 
-    const heartRight = document.createElement('div');
-    heartRight.classList.add('favorite_heart__right');
+      const heartRight = document.createElement('div');
+      heartRight.classList.add('favorite_heart__right');
 
-    heart.append(heartLeft);
-    heart.append(heartRight);
-    favoriteWrapper.append(heart);
-    favorite.append(favoriteWrapper);
-  }
+      heart.append(heartLeft);
+      heart.append(heartRight);
+      favoriteWrapper.append(heart);
+      favorite.append(favoriteWrapper);
+
+      //set favorite aria label
+      favorite.setAttribute(
+        'aria-label',
+        'This restaurant is marked as favorite'
+      );
+    }
+  });
 
   const li = document.createElement('li');
 
@@ -268,3 +276,16 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 };
+
+function isFavorite(id) {
+  return IDBHelper.getActions()
+    .then(actions =>
+      actions.filter(
+        a => a.type === 'FAVORITE' && a.body.restaurant_id == id.toString()
+      )
+    )
+    .then(arr => {
+      if (arr.length > 0) return true;
+      else return false;
+    });
+}
