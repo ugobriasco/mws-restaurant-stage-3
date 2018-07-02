@@ -55,7 +55,6 @@ const fetchRestaurantFromURL = callback => {
         console.error(error);
         return;
       }
-      console.log(restaurant);
       fillRestaurantHTML();
       callback(null, restaurant);
     });

@@ -13,13 +13,21 @@ const injectCSS = require('gulp-inject-css');
 const minifyHTML = require('gulp-htmlmin');
 const browserSync = require('browser-sync').create();
 
-gulp.task('default', ['copy-manifest', 'copy-img', 'build', 'watch']);
+gulp.task('default', ['copy-manifest', 'copy-img', 'build', 'serve']);
+gulp.task('dev', ['copy-manifest', 'copy-img', 'build', 'watch']);
+
+gulp.task('serve', function() {
+  browserSync.init({
+    server: './dist',
+    port: 3000
+  });
+});
 
 gulp.task('watch', function() {
   console.log('👀  Gulp is watching 👀 ');
-  gulp.watch('src/js/**/*.js', ['scripts']);
-  gulp.watch('src/scss/**/*.scss', ['styles', 'build-html']);
-  gulp.watch('src/*.html', ['build-html']);
+  gulp.watch('src/js/**/*.js', ['build-scripts']);
+  gulp.watch('src/scss/**/*.scss', ['build-styles-then-html']);
+  gulp.watch('src/*.html', ['build-styles-then-html']);
   gulp.watch('./dist/**/*').on('change', browserSync.reload);
   browserSync.init({
     server: './dist',
@@ -27,49 +35,65 @@ gulp.task('watch', function() {
   });
 });
 
-gulp.task('build', ['styles', 'scripts', 'sw', 'build-html']);
+gulp.task('build', ['build-scripts', 'build-sw', 'build-styles-then-html']);
 
-gulp.task('styles', function() {
-  gulp
-    .src([
-      'src/scss/styles.scss',
-      'src/scss/styles.md.scss',
-      'src/scss/styles.lg.scss',
-      'src/scss/floatingform.scss'
-    ])
-    .pipe(
-      sass({
-        outputStyle: 'compressed'
-      }).on('error', sass.logError)
-    )
-    .pipe(
-      autoprefixer({
-        browsers: ['last 2 versions']
-      })
-    )
-    .pipe(gulp.dest('./src/css'));
+gulp.task('build-styles-then-html', function() {
+  return Promise.all([
+    new Promise((resolve, reject) => {
+      gulp
+        .src([
+          'src/scss/styles.scss',
+          'src/scss/styles.md.scss',
+          'src/scss/styles.lg.scss',
+          'src/scss/floatingform.scss'
+        ])
+        .pipe(
+          sass({
+            outputStyle: 'compressed'
+          }).on('error', sass.logError)
+        )
+        .pipe(
+          autoprefixer({
+            browsers: ['last 2 versions']
+          })
+        )
+        .pipe(gulp.dest('./src/css'))
+        .on('end', resolve);
+    }).then(() => {
+      gulp
+        .src('src/*.html')
+        .pipe(injectCSS())
+        .pipe(
+          minifyHTML({
+            removeComments: true,
+            collapseWhitespace: true
+          })
+        )
+        .pipe(gulp.dest('./dist'));
+    })
+  ]);
 });
 
-gulp.task('build-html', function() {
-  gulp
-    .src('src/*.html')
-    .pipe(injectCSS())
-    .pipe(
-      minifyHTML({
-        removeComments: true,
-        collapseWhitespace: true
-      })
-    )
-    .pipe(gulp.dest('./dist'));
-});
+// gulp.task('build-html', ['build-styles'], function() {
+//   gulp
+//     .src('src/*.html')
+//     .pipe(injectCSS())
+//     .pipe(
+//       minifyHTML({
+//         removeComments: true,
+//         collapseWhitespace: true
+//       })
+//     )
+//     .pipe(gulp.dest('./dist'));
+// });
 
 gulp.task('copy-manifest', function() {
   gulp.src('src/manifest.json').pipe(gulp.dest('./dist'));
 });
 
-gulp.task('scripts', ['build-main', 'build-restaurants']);
+gulp.task('build-scripts', ['build-main-scripts', 'build-restaurants-scripts']);
 
-gulp.task('build-main', function() {
+gulp.task('build-main-scripts', function() {
   gulp
     .src([
       'src/js/lib/idb.js',
@@ -89,7 +113,7 @@ gulp.task('build-main', function() {
     .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('build-restaurants', function() {
+gulp.task('build-restaurants-scripts', function() {
   gulp
     .src([
       'src/js/lib/idb.js',
@@ -107,6 +131,14 @@ gulp.task('build-restaurants', function() {
       gutil.log(gutil.colors.red('[Error]'), err.toString());
     })
     .pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('build-sw', function() {
+  gulp
+    .src('src/sw.js')
+    .pipe(babel())
+    .pipe(concat('sw.js'))
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('copy-img', function() {
@@ -128,12 +160,4 @@ gulp.task('copy-img', function() {
     )
     .pipe(gulp.dest('dist/icons'));
   gulp.src('src/favicon.ico').pipe(gulp.dest('./dist'));
-});
-
-gulp.task('sw', function() {
-  gulp
-    .src('src/sw.js')
-    .pipe(babel())
-    .pipe(concat('sw.js'))
-    .pipe(gulp.dest('./dist'));
 });
