@@ -53,12 +53,12 @@
       </div>
     </section>
 
-    <div class="floating-form" id="floating-form">
-      <div class="floating-form-icon-wrapper" onClick="toggleForm()">
-        <img src="./icons/comment.svg" width="35px" alt="">
+    <section class="floating-form" id="floating-form" role='form'>
+      <div class="floating-form-icon-wrapper" onClick="toggleForm()" role="button" aria-hidden="true" >
+        <img src="./icons/comment.svg" alt="Toggle for showing and hiding the review form" width="35px" alt="">
       </div>
-      <span id="close-form-icon">&times;</span>
-      <form class="" id='add-review-form'>
+      <span id="close-form-icon" role="button" aria-hidden="true" >&times;</span>
+      <form  id='add-review-form'>
         <h3 id="title">Add a review!</h3>
         <input type="text" id='name' name="name" value="" aria-label='What is your name?' placeholder="Your name" required>
         <fieldset id='rating' aria-label='Could you rate the restaurant form 1 to 5 stars?' required>
@@ -74,7 +74,7 @@
         <textarea name="comments" id='comments' rows="8" cols="80" placeholder="Your review" aria-label="Whould you like to leave an additional comment?"></textarea>
         <button type="button" name="button" onClick="handleSubmit()" aria-label="Submit your review!">Submit</button>
       </form>
-    </div>
+    </section>
     <section id="reviews-container">
       <ul id="offline-reviews-list" class='reviews-list'></ul>
       <ul id="reviews-list"class='reviews-list'></ul>

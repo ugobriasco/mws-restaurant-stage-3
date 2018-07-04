@@ -73,7 +73,7 @@ class DBHelper {
       actions.forEach(action => {
         if (action.type === 'REVIEW') {
           return DBHelper.postReview(action.body).then(() => {
-            Alert.throwSuccess('An offline review have been published');
+            Alert.throwSuccess('An offline review has been published');
             return IDBHelper.deleteAction(action.id);
           });
         }
