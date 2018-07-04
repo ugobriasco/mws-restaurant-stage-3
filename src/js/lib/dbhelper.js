@@ -51,35 +51,20 @@ class DBHelper {
   /**
    * Fetch All Reviews from a given Restaurant ID
    */
-  static fetchReviews(restaurantID, callback) {
+  static fetchReviews(restaurantID) {
     const URL = `${
       DBHelper.DATABASE_URL
     }/reviews/?restaurant_id=${restaurantID}`;
-    fetch(URL)
+    return fetch(URL)
+      .then(res => res.json())
+      .then(reviews => IDBHelper.refreshReviews(reviews))
+      .then(() => IDBHelper.getReviews())
+      .then(reviews => reviews.filter(r => r.restaurant_id == restaurantID))
       .catch(err => {
         console.log(err, 'connectivity error, serving reviews from cache');
-        IDBHelper.getReviews().then(localReviews => {
-          const filteredReviews = localReviews.filter(
-            r => r.restaurant_id == restaurantID
-          );
-          callback(null, filteredReviews);
+        return IDBHelper.getReviews().then(localReviews => {
+          return localReviews.filter(r => r.restaurant_id == restaurantID);
         });
-      })
-      .then(res => res.json())
-      .then(reviews => {
-        IDBHelper.refreshReviews(reviews);
-      })
-      .then(() => {
-        IDBHelper.getReviews().then(localReviews => {
-          const filteredReviews = localReviews.filter(
-            r => r.restaurant_id == restaurantID
-          );
-          callback(null, filteredReviews);
-        });
-      })
-      .catch(err => {
-        console.log('Requesting reviews failed', err);
-        callback(err);
       });
   }
 
@@ -88,6 +73,7 @@ class DBHelper {
       actions.forEach(action => {
         if (action.type === 'REVIEW') {
           return DBHelper.postReview(action.body).then(() => {
+            Alert.throwSuccess('An offline review have been published');
             return IDBHelper.deleteAction(action.id);
           });
         }
@@ -95,16 +81,10 @@ class DBHelper {
     });
   }
 
-  static postReview(_body) {
+  static submitReview(_body) {
     const URL = `${DBHelper.DATABASE_URL}/reviews/`;
 
-    return fetch(URL, {
-      method: 'POST',
-      body: JSON.stringify(_body),
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
+    return DBHelper.postReview(_body)
       .catch(err => {
         console.log('youre offline! no new review added');
         return IDBHelper.addAction('REVIEW', _body)
@@ -118,6 +98,17 @@ class DBHelper {
         console.log('new review added');
         return res;
       });
+  }
+
+  static postReview(body) {
+    const URL = `${DBHelper.DATABASE_URL}/reviews/`;
+    return fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
   }
 
   /**

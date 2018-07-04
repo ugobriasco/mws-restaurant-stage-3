@@ -109,29 +109,31 @@ const fillRestaurantHoursHTML = (
 
 const getReviews = () => {
   const restaurantID = getParameterByName('id');
-  DBHelper.fetchOfflineReviews()
-    .then(() => {
-      IDBHelper.getActions().then(actions => {
-        const offlineReviews = actions
-          .filter(
-            a => a.type === 'REVIEW' && a.body.restaurant_id == restaurantID
-          )
-          .map(a => a.body);
-        fillReviewsHTML(offlineReviews, { offline: true });
-      });
-    })
-    .then(() => {
-      DBHelper.fetchReviews(restaurantID, (err, reviews) => {
-        const sortedReviews = reviews.sort((a, b) => a.id < b.id);
-        fillReviewsHTML(sortedReviews);
-      });
+
+  const offlinePromise = DBHelper.fetchOfflineReviews()
+    .then(() => IDBHelper.getActions())
+    .then(actions => {
+      return actions
+        .filter(
+          a => a.type === 'REVIEW' && a.body.restaurant_id == restaurantID
+        )
+        .map(a => a.body);
     });
+
+  const onlinePromise = DBHelper.fetchReviews(restaurantID).then(reviews => {
+    return reviews.sort((a, b) => a.id < b.id);
+  });
+
+  return Promise.all([offlinePromise, onlinePromise])
+    .then(allReviews => allReviews[0].concat(allReviews[1]))
+    .then(allReviews => fillReviewsHTML(allReviews));
 };
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = [], opt = {}) => {
+const fillReviewsHTML = (reviews = []) => {
   const container = document.getElementById('reviews-container');
+  const reviewsList = document.getElementById('reviews-list');
 
   if (!document.getElementById('section-review-title')) {
     const title = document.createElement('h3');
@@ -146,27 +148,14 @@ const fillReviewsHTML = (reviews = [], opt = {}) => {
     container.appendChild(noReviews);
     return;
   }
-  const reviewsList = document.getElementById('reviews-list');
-  const offlineReviewsList = document.getElementById('offline-reviews-list');
 
-  if (opt.offline) {
-    reviews.forEach(review => {
-      const reviewID = `review-${review.id}`;
-      if (!document.getElementById(reviewID)) {
-        offlineReviewsList.appendChild(createReviewHTML(review));
-      }
-    });
-    container.appendChild(offlineReviewsList);
-    return;
+  while (reviewsList.firstChild) {
+    reviewsList.removeChild(reviewsList.firstChild);
   }
 
-  reviews.forEach(review => {
-    const reviewID = `review-${review.id}`;
-    if (!document.getElementById(reviewID)) {
-      reviewsList.appendChild(createReviewHTML(review));
-    }
-  });
-  container.appendChild(reviewsList);
+  reviews.forEach(review => reviewsList.appendChild(createReviewHTML(review)));
+
+  return container.appendChild(reviewsList);
 };
 
 /**
@@ -267,7 +256,7 @@ function handleSubmit() {
     return;
   }
 
-  DBHelper.postReview(body).then(res => {
+  DBHelper.submitReview(body).then(res => {
     toggleForm();
     document.getElementById('add-review-form').reset();
     if (res.isOffline) {
